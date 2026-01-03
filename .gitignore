@@ -1,0 +1,20 @@
+# .NET / MSBuild
+bin/
+obj/
+**/bin/
+**/obj/
+
+# Rider / VS / VS Code
+.vs/
+.idea/
+.vscode/
+
+# macOS
+.DS_Store
+
+# NuGet
+*.nupkg
+packages/
+
+# Logs
+*.log

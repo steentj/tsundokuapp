@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	x:Class="Tsundoku.Pages.BookEditPage"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:markup="clr-namespace:Tsundoku.MarkupExtensions"
+	xmlns:viewmodels="clr-namespace:Tsundoku.ViewModels"
+	x:DataType="viewmodels:BookEditViewModel"
+	Title="{markup:Translate Key=NavAdd}">
+
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="{markup:Translate Key=ActionSave}" Command="{Binding SaveCommand}" />
+	</ContentPage.ToolbarItems>
+
+	<ScrollView>
+		<VerticalStackLayout Padding="16" Spacing="12">
+			<Label Text="{Binding ValidationMessage}" TextColor="#D64545" IsVisible="{Binding ValidationMessage, Converter={StaticResource StringNotNullOrEmptyToBoolConverter}}" />
+
+			<Label Text="{markup:Translate Key=BookTitle}" />
+			<Entry Text="{Binding Title}" />
+
+			<Label Text="{markup:Translate Key=BookAuthor}" />
+			<Entry Text="{Binding Author}" />
+
+			<Label Text="{markup:Translate Key=BookDateBought}" />
+			<DatePicker Date="{Binding DateBought}" />
+
+			<Label Text="{markup:Translate Key=BookReason}" />
+			<Editor Text="{Binding ReasonForBuying}" AutoSize="TextChanges" />
+
+			<Label Text="{markup:Translate Key=BookStatus}" />
+			<Picker ItemsSource="{Binding StatusOptions}" SelectedItem="{Binding SelectedStatusOption}" />
+
+			<Label Text="{markup:Translate Key=BookIsbn}" />
+			<HorizontalStackLayout Spacing="12">
+				<Entry Text="{Binding Isbn}" HorizontalOptions="FillAndExpand" />
+				<Button Text="{markup:Translate Key=ActionLookupIsbn}" Command="{Binding LookupIsbnCommand}" />
+			</HorizontalStackLayout>
+
+			<Label Text="{markup:Translate Key=BookCoverImage}" />
+			<HorizontalStackLayout Spacing="12">
+				<Button Text="{markup:Translate Key=ActionPickPhoto}" Command="{Binding PickPhotoCommand}" />
+				<Button Text="{markup:Translate Key=ActionTakePhoto}" Command="{Binding TakePhotoCommand}" />
+				<Button Text="{markup:Translate Key=ActionPickFile}" Command="{Binding PickFileCommand}" />
+			</HorizontalStackLayout>
+			<Image Source="{Binding ImagePath}" HeightRequest="160" Aspect="AspectFit" />
+
+			<Label Text="{markup:Translate Key=BookShortDescription}" />
+			<Editor Text="{Binding ShortDescription}" AutoSize="TextChanges" />
+
+			<HorizontalStackLayout Spacing="12">
+				<Label Text="{markup:Translate Key=BookDateStarted}" VerticalOptions="Center" />
+				<Switch IsToggled="{Binding HasStartedReading}" HorizontalOptions="EndAndExpand" />
+			</HorizontalStackLayout>
+			<DatePicker Date="{Binding StartedReadingDate}" IsEnabled="{Binding HasStartedReading}" />
+
+			<HorizontalStackLayout Spacing="12">
+				<Label Text="{markup:Translate Key=BookDateFinished}" VerticalOptions="Center" />
+				<Switch IsToggled="{Binding HasFinishedReading}" HorizontalOptions="EndAndExpand" />
+			</HorizontalStackLayout>
+			<DatePicker Date="{Binding FinishedReadingDate}" IsEnabled="{Binding HasFinishedReading}" />
+
+			<Label Text="{markup:Translate Key=BookReview}" />
+			<Editor Text="{Binding Review}" AutoSize="TextChanges" />
+
+			<Label Text="{markup:Translate Key=BookRating}" />
+			<Stepper Minimum="0" Maximum="5" Increment="1" Value="{Binding RatingValue}" />
+		</VerticalStackLayout>
+	</ScrollView>
+</ContentPage>

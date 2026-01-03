@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="AppTitle" xml:space="preserve"><value>Tsundoku</value></data>
+
+  <data name="NavLibrary" xml:space="preserve"><value>Bibliotek</value></data>
+  <data name="NavAdd" xml:space="preserve"><value>Tilføj</value></data>
+
+  <data name="BooksEmpty" xml:space="preserve"><value>Ingen bøger endnu</value></data>
+  <data name="BooksAddFirst" xml:space="preserve"><value>Tilføj din første bog</value></data>
+
+  <data name="BookTitle" xml:space="preserve"><value>Titel</value></data>
+  <data name="BookAuthor" xml:space="preserve"><value>Forfatter</value></data>
+  <data name="BookDateBought" xml:space="preserve"><value>Købsdato</value></data>
+  <data name="BookReason" xml:space="preserve"><value>Hvorfor købte du bogen?</value></data>
+  <data name="BookIsbn" xml:space="preserve"><value>ISBN</value></data>
+  <data name="BookShortDescription" xml:space="preserve"><value>Kort beskrivelse</value></data>
+  <data name="BookDateStarted" xml:space="preserve"><value>Startdato</value></data>
+  <data name="BookDateFinished" xml:space="preserve"><value>Slutdato</value></data>
+  <data name="BookStatus" xml:space="preserve"><value>Status</value></data>
+  <data name="BookCoverImage" xml:space="preserve"><value>Forsidebillede</value></data>
+  <data name="BookReview" xml:space="preserve"><value>Anmeldelse</value></data>
+  <data name="BookRating" xml:space="preserve"><value>Bedømmelse</value></data>
+
+  <data name="StatusBought" xml:space="preserve"><value>Købt</value></data>
+  <data name="StatusStartedReading" xml:space="preserve"><value>Startet</value></data>
+  <data name="StatusRead" xml:space="preserve"><value>Læst</value></data>
+  <data name="StatusGivenUp" xml:space="preserve"><value>Opgivet</value></data>
+
+  <data name="ActionSave" xml:space="preserve"><value>Gem</value></data>
+  <data name="ActionEdit" xml:space="preserve"><value>Redigér</value></data>
+  <data name="ActionDelete" xml:space="preserve"><value>Slet</value></data>
+  <data name="ActionCancel" xml:space="preserve"><value>Annuller</value></data>
+  <data name="ActionPickPhoto" xml:space="preserve"><value>Vælg billede</value></data>
+  <data name="ActionTakePhoto" xml:space="preserve"><value>Tag billede</value></data>
+  <data name="ActionPickFile" xml:space="preserve"><value>Vælg fil</value></data>
+  <data name="ActionLookupIsbn" xml:space="preserve"><value>Find via ISBN</value></data>
+
+  <data name="ValidationRequired" xml:space="preserve"><value>Udfyld alle obligatoriske felter.</value></data>
+  <data name="ValidationRating" xml:space="preserve"><value>Bedømmelse skal være mellem 1 og 5.</value></data>
+</root>

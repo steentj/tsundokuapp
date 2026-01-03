@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+	x:Class="Tsundoku.Pages.LibraryPage"
+	x:Name="LibraryPageRoot"
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:markup="clr-namespace:Tsundoku.MarkupExtensions"
+	xmlns:models="clr-namespace:Tsundoku.Models"
+	xmlns:viewmodels="clr-namespace:Tsundoku.ViewModels"
+	x:DataType="viewmodels:LibraryViewModel"
+	Title="{markup:Translate Key=NavLibrary}">
+
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="{markup:Translate Key=NavAdd}" Command="{Binding AddCommand}" />
+	</ContentPage.ToolbarItems>
+
+	<RefreshView IsRefreshing="{Binding IsBusy}" Command="{Binding LoadCommand}">
+		<CollectionView ItemsSource="{Binding Books}" SelectionMode="None">
+			<CollectionView.EmptyView>
+				<VerticalStackLayout Padding="24" Spacing="12" HorizontalOptions="Center" VerticalOptions="Center">
+					<Label Text="{markup:Translate Key=BooksEmpty}" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+					<Button Text="{markup:Translate Key=BooksAddFirst}" Command="{Binding AddCommand}" />
+				</VerticalStackLayout>
+			</CollectionView.EmptyView>
+
+			<CollectionView.ItemTemplate>
+				<DataTemplate x:DataType="models:Book">
+					<SwipeView>
+						<SwipeView.RightItems>
+							<SwipeItems Mode="Execute">
+								<SwipeItem
+									Text="{markup:Translate Key=ActionDelete}"
+									BackgroundColor="#D64545"
+									Command="{Binding BindingContext.DeleteCommand, Source={x:Reference LibraryPageRoot}}"
+									CommandParameter="{Binding .}" />
+							</SwipeItems>
+						</SwipeView.RightItems>
+
+						<Grid Padding="12" ColumnSpacing="12" RowSpacing="2" ColumnDefinitions="56,*,Auto" RowDefinitions="Auto,Auto">
+							<Grid.GestureRecognizers>
+								<TapGestureRecognizer
+									Command="{Binding BindingContext.OpenCommand, Source={x:Reference LibraryPageRoot}}"
+									CommandParameter="{Binding .}" />
+							</Grid.GestureRecognizers>
+
+							<Image
+								Grid.RowSpan="2"
+								HeightRequest="56"
+								WidthRequest="42"
+								Aspect="AspectFill"
+								Source="{Binding ImagePath}" />
+
+							<Label Grid.Column="1" Text="{Binding Title}" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+							<Label Grid.Column="1" Grid.Row="1" Text="{Binding Author}" FontSize="12" TextColor="{StaticResource Gray600}" LineBreakMode="TailTruncation" />
+
+							<Label
+								Grid.Column="2"
+								Text="{Binding Status, Converter={StaticResource BookStatusToLocalizedStringConverter}}"
+								FontSize="12"
+								TextColor="{StaticResource Gray600}" />
+						</Grid>
+					</SwipeView>
+				</DataTemplate>
+			</CollectionView.ItemTemplate>
+		</CollectionView>
+	</RefreshView>
+</ContentPage>

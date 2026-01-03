@@ -1,0 +1,4 @@
+/* Mac Catalyst permission prompts (Danish) */
+"NSCameraUsageDescription" = "Tsundoku skal bruge adgang til kameraet for at tage et billede af bogens forside.";
+"NSPhotoLibraryUsageDescription" = "Tsundoku skal bruge adgang til dine billeder for at vælge et forsidebillede.";
+"NSPhotoLibraryAddUsageDescription" = "Tsundoku skal bruge tilladelse til at gemme det ændrede (nedskalerede) forsidebillede.";
