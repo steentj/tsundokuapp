@@ -2,6 +2,7 @@ using Moq;
 using Tsundoku.Models;
 using Tsundoku.Services;
 using Tsundoku.ViewModels;
+using TsundokuAppTests.Stubs;
 
 namespace TsundokuAppTests.ViewModels;
 
@@ -14,7 +15,7 @@ public class LibraryViewModelTests
 		var mockRepository = new Mock<IBookRepository>();
 
 		// Act
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Assert
 		Assert.NotNull(viewModel.Books);
@@ -28,7 +29,7 @@ public class LibraryViewModelTests
 		var mockRepository = new Mock<IBookRepository>();
 
 		// Act
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Assert
 		Assert.False(viewModel.IsBusy);
@@ -48,7 +49,7 @@ public class LibraryViewModelTests
 		mockRepository.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(books);
 
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Act
 		await viewModel.LoadCommand.ExecuteAsync(null);
@@ -68,7 +69,7 @@ public class LibraryViewModelTests
 		mockRepository.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new List<Book>());
 
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Simulate the view model being busy
 		await viewModel.LoadCommand.ExecuteAsync(null);
@@ -107,7 +108,7 @@ public class LibraryViewModelTests
 			.ReturnsAsync(initialBooks)
 			.ReturnsAsync(newBooks);
 
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Act
 		await viewModel.LoadCommand.ExecuteAsync(null);
@@ -127,7 +128,7 @@ public class LibraryViewModelTests
 		mockRepository.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
 			.ReturnsAsync(new List<Book>());
 
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Act
 		await viewModel.LoadCommand.ExecuteAsync(null);
@@ -144,7 +145,7 @@ public class LibraryViewModelTests
 		mockRepository.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
 			.ThrowsAsync(new Exception("Test exception"));
 
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Act & Assert
 		await Assert.ThrowsAsync<Exception>(async () => 
@@ -162,7 +163,7 @@ public class LibraryViewModelTests
 		mockRepository.Setup(r => r.DeleteAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
 			.Returns(Task.CompletedTask);
 
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 		viewModel.Books.Add(book);
 
 		// Act
@@ -178,7 +179,7 @@ public class LibraryViewModelTests
 	{
 		// Arrange
 		var mockRepository = new Mock<IBookRepository>();
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Act
 		await viewModel.DeleteCommand.ExecuteAsync(null);
@@ -192,7 +193,7 @@ public class LibraryViewModelTests
 	{
 		// Arrange
 		var mockRepository = new Mock<IBookRepository>();
-		var viewModel = new LibraryViewModel(mockRepository.Object);
+		var viewModel = new LibraryViewModel(mockRepository.Object, new ImmediateMainThreadInvoker());
 
 		// Act
 		await viewModel.OpenCommand.ExecuteAsync(null);

@@ -25,7 +25,14 @@ public sealed class BookStatusToLocalizedStringConverter : IValueConverter
 			_ => "StatusBought",
 		};
 
-		return ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+		try
+		{
+			return ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+		}
+		catch (MissingManifestResourceException)
+		{
+			return key;
+		}
 	}
 
 	public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

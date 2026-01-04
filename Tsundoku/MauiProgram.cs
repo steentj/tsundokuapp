@@ -23,6 +23,9 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
+		builder.Services.AddSingleton<IAppPaths, MauiAppPaths>();
+		builder.Services.AddSingleton<IMainThreadInvoker, MauiMainThreadInvoker>();
+
 		builder.Services.AddSingleton<TsundokuDb>();
 		builder.Services.AddSingleton<IBookRepository, BookRepository>();
 

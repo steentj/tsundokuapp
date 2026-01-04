@@ -1,4 +1,5 @@
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Linq;
 
@@ -61,6 +62,8 @@ public sealed class OpenLibraryBookLookupService(HttpClient httpClient) : IBookL
 	{
 		return firstSentence switch
 		{
+			JsonElement je when je.ValueKind == JsonValueKind.String => je.GetString(),
+			JsonElement je when je.ValueKind == JsonValueKind.Object && je.TryGetProperty("value", out var v) && v.ValueKind == JsonValueKind.String => v.GetString(),
 			string s => s,
 			Dictionary<string, object> dict when dict.TryGetValue("value", out var v) => v?.ToString(),
 			_ => null,

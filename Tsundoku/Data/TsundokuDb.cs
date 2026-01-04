@@ -1,9 +1,10 @@
 using SQLite;
 using Tsundoku.Models;
+using Tsundoku.Services;
 
 namespace Tsundoku.Data;
 
-public sealed class TsundokuDb
+public sealed class TsundokuDb(IAppPaths appPaths)
 {
 	private SQLiteAsyncConnection? _connection;
 	private readonly SemaphoreSlim _initLock = new(1, 1);
@@ -21,7 +22,7 @@ public sealed class TsundokuDb
 			if (_connection is not null)
 				return;
 
-			var dbPath = Path.Combine(FileSystem.AppDataDirectory, "tsundoku.db3");
+			var dbPath = Path.Combine(appPaths.AppDataDirectory, "tsundoku.db3");
 			_connection = new SQLiteAsyncConnection(dbPath);
 			await _connection.CreateTableAsync<Book>().ConfigureAwait(false);
 		}

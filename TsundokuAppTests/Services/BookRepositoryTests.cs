@@ -1,6 +1,7 @@
 using Tsundoku.Data;
 using Tsundoku.Models;
 using Tsundoku.Services;
+using TsundokuAppTests.Stubs;
 
 namespace TsundokuAppTests.Services;
 
@@ -8,11 +9,14 @@ public class BookRepositoryTests : IAsyncLifetime
 {
 	private TsundokuDb? _db;
 	private BookRepository? _repository;
+	private string? _tempDir;
 
 	public async Task InitializeAsync()
 	{
 		// Create a new database for each test
-		_db = new TsundokuDb();
+		_tempDir = Path.Combine(Path.GetTempPath(), "TsundokuAppTests", Guid.NewGuid().ToString("N"));
+		Directory.CreateDirectory(_tempDir);
+		_db = new TsundokuDb(new TestAppPaths(_tempDir));
 		await _db.InitializeAsync();
 		_repository = new BookRepository(_db);
 	}
@@ -23,6 +27,18 @@ public class BookRepositoryTests : IAsyncLifetime
 		if (_db?.Connection != null)
 		{
 			await _db.Connection.CloseAsync();
+		}
+
+		if (!string.IsNullOrWhiteSpace(_tempDir) && Directory.Exists(_tempDir))
+		{
+			try
+			{
+				Directory.Delete(_tempDir, recursive: true);
+			}
+			catch
+			{
+				// Best-effort cleanup
+			}
 		}
 	}
 

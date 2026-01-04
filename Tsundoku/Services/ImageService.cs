@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Tsundoku.Services;
 
-public sealed class ImageService(HttpClient httpClient) : IImageService
+public sealed class ImageService(HttpClient httpClient, IAppPaths appPaths) : IImageService
 {
 	private const int MaxWidth = 320;
 	private const int MaxHeight = 480;
@@ -49,14 +49,14 @@ public sealed class ImageService(HttpClient httpClient) : IImageService
 		return await SaveResizedAsync(stream, cancellationToken).ConfigureAwait(false);
 	}
 
-	private static string EnsureImagesDir()
+	private string EnsureImagesDir()
 	{
-		var dir = Path.Combine(FileSystem.AppDataDirectory, "images");
+		var dir = Path.Combine(appPaths.AppDataDirectory, "images");
 		Directory.CreateDirectory(dir);
 		return dir;
 	}
 
-	private static string NewImagePath()
+	private string NewImagePath()
 	{
 		return Path.Combine(EnsureImagesDir(), $"{Guid.NewGuid():N}.jpg");
 	}

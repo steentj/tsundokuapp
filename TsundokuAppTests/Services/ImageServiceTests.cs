@@ -2,11 +2,19 @@ using System.Net;
 using Moq;
 using Moq.Protected;
 using Tsundoku.Services;
+using TsundokuAppTests.Stubs;
 
 namespace TsundokuAppTests.Services;
 
 public class ImageServiceTests
 {
+	private static TestAppPaths CreateTempAppPaths()
+	{
+		var dir = Path.Combine(Path.GetTempPath(), "TsundokuAppTests", Guid.NewGuid().ToString("N"));
+		Directory.CreateDirectory(dir);
+		return new TestAppPaths(dir);
+	}
+
 	[Fact]
 	public async Task DownloadAndStoreAsync_WithValidUrl_ReturnsFilePath()
 	{
@@ -30,7 +38,7 @@ public class ImageServiceTests
 			});
 
 		var httpClient = new HttpClient(mockHandler.Object);
-		var service = new ImageService(httpClient);
+		var service = new ImageService(httpClient, CreateTempAppPaths());
 
 		// Act
 		var result = await service.DownloadAndStoreAsync(imageUrl);
@@ -66,7 +74,7 @@ public class ImageServiceTests
 			});
 
 		var httpClient = new HttpClient(mockHandler.Object);
-		var service = new ImageService(httpClient);
+		var service = new ImageService(httpClient, CreateTempAppPaths());
 
 		// Act
 		var result = await service.DownloadAndStoreAsync(imageUrl);
@@ -76,45 +84,32 @@ public class ImageServiceTests
 	}
 
 	[Fact]
-	public async Task DownloadAndStoreAsync_WithCancellationToken_PassesToken()
+	public async Task DownloadAndStoreAsync_WhenTokenAlreadyCanceled_ThrowsOperationCanceledException()
 	{
 		// Arrange
 		var imageUrl = "https://example.com/image.jpg";
 		var cts = new CancellationTokenSource();
-		var jpegBytes = CreateMinimalJpegImage();
+		cts.Cancel();
 		
 		var mockHandler = new Mock<HttpMessageHandler>();
 		mockHandler.Protected()
 			.Setup<Task<HttpResponseMessage>>(
 				"SendAsync",
 				ItExpr.IsAny<HttpRequestMessage>(),
-				ItExpr.Is<CancellationToken>(ct => ct == cts.Token)
+				ItExpr.IsAny<CancellationToken>()
 			)
 			.ReturnsAsync(new HttpResponseMessage
 			{
 				StatusCode = HttpStatusCode.OK,
-				Content = new ByteArrayContent(jpegBytes)
+				Content = new ByteArrayContent(CreateMinimalJpegImage())
 			});
 
 		var httpClient = new HttpClient(mockHandler.Object);
-		var service = new ImageService(httpClient);
+		var service = new ImageService(httpClient, CreateTempAppPaths());
 
 		// Act
-		var result = await service.DownloadAndStoreAsync(imageUrl, cts.Token);
-
-		// Assert
-		mockHandler.Protected().Verify(
-			"SendAsync",
-			Times.Once(),
-			ItExpr.IsAny<HttpRequestMessage>(),
-			ItExpr.Is<CancellationToken>(ct => ct == cts.Token)
-		);
-		
-		// Cleanup
-		if (result != null && File.Exists(result))
-		{
-			File.Delete(result);
-		}
+		await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
+			await service.DownloadAndStoreAsync(imageUrl, cts.Token));
 	}
 
 	[Fact]
@@ -136,7 +131,7 @@ public class ImageServiceTests
 			});
 
 		var httpClient = new HttpClient(mockHandler.Object);
-		var service = new ImageService(httpClient);
+		var service = new ImageService(httpClient, CreateTempAppPaths());
 
 		// Act
 		var result = await service.DownloadAndStoreAsync(imageUrl);

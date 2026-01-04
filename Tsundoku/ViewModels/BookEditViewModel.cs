@@ -144,7 +144,16 @@ public partial class BookEditViewModel(IBookRepository repository, IBookLookupSe
 	}
 
 	private static string GetString(string key)
-		=> ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+	{
+		try
+		{
+			return ResourceManager.GetString(key, CultureInfo.CurrentUICulture) ?? key;
+		}
+		catch (MissingManifestResourceException)
+		{
+			return key;
+		}
+	}
 
 	private bool Validate()
 	{

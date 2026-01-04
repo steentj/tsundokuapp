@@ -6,7 +6,7 @@ using Tsundoku.Services;
 
 namespace Tsundoku.ViewModels;
 
-public partial class LibraryViewModel(IBookRepository repository) : ObservableObject
+public partial class LibraryViewModel(IBookRepository repository, IMainThreadInvoker mainThreadInvoker) : ObservableObject
 {
 	public ObservableCollection<Book> Books { get; } = new();
 
@@ -24,7 +24,7 @@ public partial class LibraryViewModel(IBookRepository repository) : ObservableOb
 			IsBusy = true;
 			var books = await repository.GetAllAsync().ConfigureAwait(false);
 
-			MainThread.BeginInvokeOnMainThread(() =>
+			mainThreadInvoker.BeginInvokeOnMainThread(() =>
 			{
 				Books.Clear();
 				foreach (var book in books)
@@ -59,6 +59,6 @@ public partial class LibraryViewModel(IBookRepository repository) : ObservableOb
 			return;
 
 		await repository.DeleteAsync(book.Id).ConfigureAwait(false);
-		MainThread.BeginInvokeOnMainThread(() => Books.Remove(book));
+		mainThreadInvoker.BeginInvokeOnMainThread(() => Books.Remove(book));
 	}
 }
