@@ -1,0 +1,6 @@
+{
+    "dotnet.defaultSolution": "Tsundoku.sln",
+    "chat.tools.terminal.autoApprove": {
+        "dotnet build": true
+    }
+}

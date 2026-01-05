@@ -1,0 +1,86 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "maccatalyst: build",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/Tsundoku/Tsundoku.csproj",
+        "-f",
+        "net10.0-maccatalyst",
+        "-c",
+        "Debug"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "maccatalyst: run",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/Tsundoku/Tsundoku.csproj",
+        "-f",
+        "net10.0-maccatalyst",
+        "-c",
+        "Debug",
+        "-t:Run"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "ios-sim: boot",
+      "type": "shell",
+      "command": "zsh",
+      "args": [
+        "-lc",
+        "open -a Simulator; xcrun simctl boot \"${input:iosDeviceName}\" 2>/dev/null || true"
+      ]
+    },
+    {
+      "label": "ios-sim: build",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/Tsundoku/Tsundoku.csproj",
+        "-f",
+        "net10.0-ios",
+        "-c",
+        "Debug",
+        "-p:RuntimeIdentifier=iossimulator-arm64"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "ios-sim: run",
+      "type": "shell",
+      "dependsOn": [
+        "ios-sim: boot"
+      ],
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/Tsundoku/Tsundoku.csproj",
+        "-f",
+        "net10.0-ios",
+        "-c",
+        "Debug",
+        "-t:Build",
+        "-t:Run",
+        "-p:RuntimeIdentifier=iossimulator-arm64"
+      ],
+      "problemMatcher": "$msCompile"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "iosDeviceName",
+      "type": "promptString",
+      "description": "iOS Simulator device name (exactly as shown by: xcrun simctl list devices)",
+      "default": "iPhone 16 Pro"
+    }
+  ]
+}
